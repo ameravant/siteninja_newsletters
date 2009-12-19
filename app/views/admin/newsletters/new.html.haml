@@ -1,0 +1,6 @@
+- content_for(:title) { concat "Create a newsletter" }
+
+%h1= yield :title
+
+- form_for [:admin, @newsletter] do |f|
+  = render :partial => "form", :locals => { :f => f }

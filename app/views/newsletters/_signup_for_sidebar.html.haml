@@ -1,0 +1,10 @@
+- content_for :side_column do
+  #newsletter-signup
+    %h1= @cms_config['site_settings']['signup_title'] ? (@cms_config['site_settings']['signup_title'].blank? ? "Sign Up" : @cms_config['site_settings']['signup_title']) : "Sign Up"
+    - if @cms_config['site_settings']['signup_description']
+      %p= @cms_config['site_settings']['signup_description']
+    - form_for :inquiry, :url => "/inquire#contact-form", :html => { :onsubmit => "form_submitted('Sending your message...')"}  do |f|
+      %fieldset
+      = f.label :email
+      = f.text_field :email, :size => 16
+      = f.submit "Subscribe"

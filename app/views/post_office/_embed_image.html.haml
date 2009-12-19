@@ -1,0 +1,11 @@
+- image = Image.find(image_id)
+
+- if size
+  - if size == "small"
+    = tag(:img, :src => image.small_thumbnail, :class => "small-image", :alt => image.image_title, :align => "right", :vspace => "10", :hspace => "10")
+  -elsif size == "medium"
+    = tag(:img, :src => image.thumbnail, :alt => image.image_title, :title => image.image_title, :style => " border: 1px solid #999; padding: 10px;", :align => "right", :vspace => "10", :hspace => "10")
+  -elsif size == "large"
+    = tag(:img, :src => "#{image.featured}", :class => "large-image", :alt => image.image_title, :title => image.image_title)
+- else
+  = tag(:img, :src => "#{image.featured}", :class => "large-image", :alt => image.image_title, :title => image.image_title)

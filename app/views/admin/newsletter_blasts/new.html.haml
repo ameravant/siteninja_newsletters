@@ -1,0 +1,32 @@
+- pretty_body = @newsletter.body
+- pretty_body.gsub!(/\#(\S*)_image:(\S*)\#/) {|x| render(:partial => "/post_office/embed_image", :locals => {:image_id => $2, :size => $1})}
+
+%h1= "Send \"%s\"" % @newsletter.subject
+%h2 Preview
+%div#blast-preview
+  - unless @settings.newsletter_logo_file_name.blank?
+    %img{:src=> "#{$DOMAIN_PATH.strip.gsub!(/\/$/, "")}" + "#{@settings.newsletter_logo(:medium)}"}
+  %div.bold= h @newsletter.subject
+  %div= "From: %s" % @settings.newsletter_from_email
+  %br
+  %div.newsletter-preview
+    = (@newsletter.body)
+    %br
+    %br
+    %br
+    %div.footer
+      %p= "This email was sent from %s to *recipient*" % @settings.newsletter_from_email
+      Don't want to receive these emails anymore?
+      = link_to 'Click here to unsubscribe.', "#"
+      %p= @settings.newsletter_footer_text
+      %p= "Email service provided by %s" % "<a href='http://ameravant.com'> Ameravant</a>"
+
+- form_for :newsletter_blast, @blast, :url => {:action => 'create'} do |f|
+  %p Choose which groups to send this newsletter to
+  %ul
+    -for group in @groups
+      %li
+        %label{:for=> "#{group.title}"} 
+        = check_box_tag('newsletter_blast[person_group_ids][]', group.id, false, :id => "#{group.title}")
+        = "%s - ( %s )" % [group.title, pluralize(group.people.size, 'person')]
+  %p= f.submit "Send out newsletter"

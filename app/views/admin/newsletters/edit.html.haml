@@ -1,0 +1,6 @@
+%h1= @newsletter.subject
+%p= link_to "Send this newsletter", new_admin_newsletter_newsletter_blast_path(@newsletter)
+- form_for [:admin, @newsletter] do |f|
+  = render :partial => "form", :locals => { :f => f }
+
+  

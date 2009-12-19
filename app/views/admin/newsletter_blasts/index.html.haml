@@ -1,0 +1,10 @@
+%h1= "Blasts from the past for %s" % @newsletter.subject
+%ol
+  -for blast in @blasts
+    %li
+      = blast.created_at
+      %p= "Sent to %d people from the following groups:" % blast.recipient_count
+      %ul
+        -for group in blast.person_groups
+          %li= "%s - ( %s )" % [group.title, pluralize(group.people.count, 'person')]
+      
