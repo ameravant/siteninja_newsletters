@@ -1,6 +1,6 @@
 class PostOffice < ActionMailer::Base
   def newsletter(newsletter, name, email, contact_id, blast_id, settings)
-    setup_email(email, settings.newsletter_from_email, newsletter.subject)
+    setup_email(email, CMS_CONFIG['site_settings']['sendgrid_username'], newsletter.subject)
     body :name => name, :email => email,:newsletter => newsletter, 
     :contact_id => contact_id, :blast_id => blast_id, :settings => settings
   end
