@@ -10,8 +10,11 @@ pretty_body.gsub!('src="/', "src=\"#{$DOMAIN_PATH}")
     <img src="<%= $DOMAIN_PATH.strip.gsub!(/\/$/, "") %><%= @settings.newsletter_logo(:medium) %>" /><br/>
     <br/>
   <%- end -%>
-
-  <%= pretty_body.gsub(/#name#/i, @name).gsub(/#email#/i, @email) %>
+  <%- if @name -%>
+    <%= pretty_body.gsub(/#name#/i, @name).gsub(/#email#/i, @email) %>
+  <%- else -%>
+    <%= pretty_body.gsub(/#email#/i, @email) %>
+  <%- end -%>
   <div style="clear: both;"></div>
   <div style="border-top:1px solid gray; font-size: 10px; font-family: verdana;">
     <p style="padding: 0; margin: 2px 0 3px 0;"><%= "This email was sent from %s to %s" % [CMS_CONFIG['site_settings']['sendgrid_username'], @email]%>
