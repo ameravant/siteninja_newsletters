@@ -25,8 +25,9 @@
   %p Choose which groups to send this newsletter to
   %ul
     -for group in @groups
-      %li
-        %label{:for=> "#{group.title}"} 
-        = check_box_tag('newsletter_blast[person_group_ids][]', group.id, false, :id => "#{group.title}")
-        = "%s - ( %s )" % [group.title, pluralize(group.people.size, 'person')]
+      -unless group.is_event_registration_group
+        %li
+          %label{:for=> "#{group.title}"} 
+          = check_box_tag('newsletter_blast[person_group_ids][]', group.id, false, :id => "#{group.title}")
+          = "%s - ( %s )" % [group.title, pluralize(group.people.size, 'person')]
   %p= f.submit "Send out newsletter"
