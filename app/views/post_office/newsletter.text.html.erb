@@ -19,11 +19,9 @@ pretty_body.gsub!('src="/', "src=\"#{$DOMAIN_PATH}")
   <div style="border-top:1px solid gray; font-size: 10px; font-family: verdana;">
     <p style="padding: 0; margin: 2px 0 3px 0;"><%= "This email was sent from %s to %s" % [CMS_CONFIG['site_settings']['sendgrid_username'], @email]%>
     <br />
-      Don't want to receive these emails anymore?
-      <%= link_to 'Click here to unsubscribe.', "#{$DOMAIN_PATH}subscriptions/#{@contact_id.to_s}/edit?email=#{u(@email)}" %>
+      <%= link_to 'Click here to manage your subscriptions.', "#{$DOMAIN_PATH}subscriptions/#{@contact_id.to_s}/edit?email=#{u(@email)}" %>
     <br />
     <%= @settings.newsletter_footer_text.gsub(/<\/?[^>]*>/, "") if @settings.newsletter_footer_text %><br />
-    <%= "Email service provided by %s" % "<a href='http://www.site-ninja.com'> SiteNinja</a>" %>
     <br style="clear:both;" />
     </p>
   </div>
