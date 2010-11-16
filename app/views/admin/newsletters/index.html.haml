@@ -13,7 +13,7 @@
   = link_to "View email queue", admin_emails_path
   
   = icon "Gear", edit_admin_setting_path
-  = link_to "Newsletter settings", edit_admin_setting_path
+  = link_to "Newsletter settings", edit_admin_setting_path(:anchor => 'Newsletter')
 
 - unless @newsletters.empty?
   %table.full_width
