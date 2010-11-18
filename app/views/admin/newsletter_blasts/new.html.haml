@@ -19,7 +19,7 @@
       Don't want to receive these emails anymore?
       = link_to 'Click here to unsubscribe.', "#"
       %p= @settings.newsletter_footer_text
-      %p= "Email service provided by %s" % "<a href='http://ameravant.com'> Ameravant</a>"
+      %p== Email service provided by #{provider_link}
 
 - form_for :newsletter_blast, @blast, :url => {:action => 'create'} do |f|
   %p Choose which groups to send this newsletter to
