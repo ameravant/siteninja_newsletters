@@ -16,8 +16,7 @@
     %br
     %div.footer
       %p= "This email was sent from %s to *recipient*" % CMS_CONFIG['site_settings']['sendgrid_username']
-      Don't want to receive these emails anymore?
-      = link_to 'Click here to unsubscribe.', "#"
+      = link_to 'Manage your subscriptions.', "#{$DOMAIN_PATH}subscriptions/#{@contact_id.to_s}/edit?email=#{u(@email)}"
       %p= @settings.newsletter_footer_text
       %p== Email service provided by #{provider_link}
 
