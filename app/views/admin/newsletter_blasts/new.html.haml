@@ -29,5 +29,5 @@
         %li
           %label{:for=> "#{group.title}"} 
           = check_box_tag('newsletter_blast[person_group_ids][]', group.id, false, :id => "#{group.title}")
-          = "%s - ( %s )" % [group.title, pluralize(group.people.size, 'person')]
+          = "%s - ( %s )" % [group.title, pluralize(Person.find_non_super_user_by_person_group(group.id, :count_only), 'person')]
   %p= f.submit "Send out newsletter"
