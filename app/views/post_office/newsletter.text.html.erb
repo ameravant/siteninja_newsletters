@@ -22,7 +22,7 @@ pretty_body.gsub!('src="/', "src=\"#{$DOMAIN_PATH}")
       <%= link_to 'Manage your subscriptions.', "#{$DOMAIN_PATH}subscriptions/#{@contact_id.to_s}/edit?email=#{u(@email)}" %>
     <br />
     <%= @settings.newsletter_footer_text.gsub(/<\/?[^>]*>/, "") if @settings.newsletter_footer_text %><br />
-    <%= "Email service provided by #{provider_link}" %>
+    <%= "Email service provided by #{link_to 'SiteNinjaCMS', 'http://www.site-ninja.com'}" %>
     <br style="clear:both;" />
     </p>
   </div>
