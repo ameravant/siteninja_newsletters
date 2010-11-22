@@ -41,7 +41,7 @@ class Admin::NewsletterBlastsController < AdminController
       begin
         PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
       rescue
-        log.info "An error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}"
+        log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
       end
     end
     blast.update_attributes(:recipient_count => contacts.size)
