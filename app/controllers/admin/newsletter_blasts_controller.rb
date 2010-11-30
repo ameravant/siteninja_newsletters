@@ -37,6 +37,7 @@ class Admin::NewsletterBlastsController < AdminController
   def send_blast(blast)
     contacts = contacts_for_blast(blast)
     log = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-errors-#{path_safe(Time.now.to_s)}.log")
+    unsendable = 0
     contacts.each do |contact|
       if contact.active && !contact.no_newsletters
         begin
@@ -44,9 +45,11 @@ class Admin::NewsletterBlastsController < AdminController
         rescue
           log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
         end
+      else
+        unsendable++
       end
     end
-    blast.update_attributes(:recipient_count => contacts.size)
+    blast.update_attributes(:recipient_count => contacts.size - unsendable)
   end
   
   def authorization
