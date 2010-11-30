@@ -38,10 +38,12 @@ class Admin::NewsletterBlastsController < AdminController
     contacts = contacts_for_blast(blast)
     log = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-errors-#{path_safe(Time.now.to_s)}.log")
     contacts.each do |contact|
-      begin
-        PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
-      rescue
-        log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
+      if contact.active && !contact.no_newsletters
+        begin
+          PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
+        rescue
+          log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
+        end
       end
     end
     blast.update_attributes(:recipient_count => contacts.size)
