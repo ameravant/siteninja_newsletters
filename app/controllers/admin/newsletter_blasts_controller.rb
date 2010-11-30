@@ -46,7 +46,7 @@ class Admin::NewsletterBlastsController < AdminController
           log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
         end
       else
-        unsendable++
+        unsendable += 1
       end
     end
     blast.update_attributes(:recipient_count => contacts.size - unsendable)
