@@ -17,30 +17,30 @@
 .options
   - unless @newsletter.images.empty?
     - images = @newsletter.images
-    %h3 Image Options
-    %p
-      You can display photos by simply selecting one below, copying the generated text and pasting it where you want it to appear.
-    = link_to("#{icon('Picture')} Add Images", "#images", :class => "fancy")
-    %br
+    #image-options
+      %h3 Image Options
+      %p
+        Display individual photos by simply selecting one below, copying the generated text and pasting where you want it to appear.
+      = link_to("#{icon('Picture')} Add Images", "#images", :id => "add-images")
+      %br
 
-    <input id="image"></input>
-    %br
-    #image-note Copy and paste the above text where you would like the image(s) to appear on the page.
+      <input id="image"></input>
+      %br
+      #image-note Copy and paste the above text where you would like the image(s) to appear on the page.
 
-    #images{:style => "display: none;"}
-      - unless images.empty?
-        %ul#image-list
-          - for image in images.sort_by(&:position)
-            %li
-              = image_tag(image.image.url(:small), :alt => image.caption, :title => image.title)
-              %h2
-                = image.title
-              = link_to("Small", "#", :onclick => "addtext('\#small_image:#{image.id}\#')")
-              = link_to("Medium", "#", :onclick => "addtext('\#medium_image:#{image.id}\#')")
-              = link_to("Large", "#", :onclick => "addtext('\#large_image:#{image.id}\#')")
-        = clear
-
-
+    %div{:style => "display: none"}
+      #images
+        - unless images.empty?
+          %ul#image-list
+            - for image in images.sort_by(&:position)
+              %li
+                = image_tag(image.image.url(:small), :alt => image.caption, :title => image.title)
+                %h2= image.title
+                = link_to("Small", "javascript:void(0)", :onclick => "addtext('\#small_image:#{image.id}\#')")
+                = link_to("Medium", "javascript:void(0)", :onclick => "addtext('\#medium_image:#{image.id}\#')")
+                = link_to("Large", "javascript:void(0)", :onclick => "addtext('\#large_image:#{image.id}\#')")
+                = link_to("Original", "javascript:void(0)", :onclick => "addtext('\#original_image:#{image.id}\#')")
+          = clear
 
     - content_for :head do
       %script{:type => "text/javascript"}
@@ -51,15 +51,30 @@
         document.getElementById('image').focus();
         document.getElementById('image').select();
         }
+      %script{:type => "text/javascript"}
+        jQuery(document).ready(function() {
+        jQuery("a#add-images").fancybox({ 
+        'zoomSpeedIn': 300,
+        'zoomSpeedOut': 300,
+        'overlayShow': true,
+        'hideOnContentClick': true,
+        'easingOut': 'easeOutQuad',
+        'easingIn': 'easeInQuad',
+        'type': 'inline'
+        }); 
+        }); 
       %style{:type => "text/css"}
         div#fancy_div { background: #fff; }
-        div#fancy_div ul#image-list { margin: 0; padding: 0; height: 350px; overflow: auto; }
-        div#fancy_div ul#image-list li { float: left; margin: 0 5px 5px 0; font-size: .8em; padding: 5px; border: 1px solid #ccc; text-align: center; height: 115px; width: 85px; }
-        div#fancy_div h2 { margin: 0 0 4px; font-family: tahoma, arial, sans-serif; font-size: 1em; color: #000; font-weight: normal; color: #999; height: 26px; overflow: hidden; }
-        div#fancy_div a { color: #336699; text-decoration: none; }
-        div#fancy_div a:hover { background: #336699; color: #fff; }
+        ul#image-list { margin: 0; padding: 0; height: 390px; overflow: auto; width: 530px; list-style: none; }
+        ul#image-list li { float: left; margin: 0 5px 5px 0; font-size: .8em; padding: 5px; border: 1px solid #ccc; text-align: center; height: 115px; width: 85px; }
+        div#fancybox-wrap h2 { margin: 0 0 4px; font-family: tahoma, arial, sans-serif; font-size: 1em; color: #000; font-weight: normal; color: #999; overflow: hidden; line-height: 1.4em; padding: 0; white-space: nowrap; }
+        div#fancybox-wrap a { color: #336699; text-decoration: none; }
+        div#fancybox-wrap a:hover { background: #336699; color: #fff; }
         input#image { display: none; width: 200px; }
         div#image-note { display: none; font-size: .75em; line-height: 1.3em; color: #999; }
+        ==#image-options { font-size: .9em; }
+        ==#image-options p { margin: 0; padding: 5px 0 ; line-height: 1.4em; }
+        ==#image-options h3 { margin: 0; padding: 10px 0; }
 %div
   = f.text_area :body, :size => "100x40", :class => "mceEditor" 
   %br

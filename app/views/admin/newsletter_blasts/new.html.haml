@@ -5,7 +5,7 @@
 %h2 Preview
 %div#blast-preview
   - unless @settings.newsletter_logo_file_name.blank?
-    %img{:src=> "#{$DOMAIN_PATH.strip.gsub!(/\/$/, "")}" + "#{@settings.newsletter_logo(:medium)}"}
+    %img{:src=> (@cms_config['site_settings']['s3_enabled'] ? "#{@settings.newsletter_logo(:medium)}" : ("#{$DOMAIN_PATH.strip.gsub!(/\/$/, "")}" + "#{@settings.newsletter_logo(:medium)}"))}
   %div.bold= h @newsletter.subject
   %div= "From: %s" % CMS_CONFIG['site_settings']['sendgrid_username']
   %br
