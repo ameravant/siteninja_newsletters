@@ -37,6 +37,12 @@ class Admin::NewslettersController < AdminController
     @newsletter_blast = NewsletterBlast.new
   end
   
+  def destroy
+    @newsletter = Newsletter.find(params[:id])
+    @newsletter.destroy
+    respond_to :js
+  end
+  
   private
   
   def authorization
