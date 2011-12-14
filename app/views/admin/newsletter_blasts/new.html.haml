@@ -7,7 +7,7 @@
   - unless @settings.newsletter_logo_file_name.blank?
     %img{:src=> (@cms_config['site_settings']['s3_enabled'] ? "#{@settings.newsletter_logo(:medium)}" : ("#{$DOMAIN_PATH.strip.gsub!(/\/$/, "")}" + "#{@settings.newsletter_logo(:medium)}"))}
   %div.bold= h @newsletter.subject
-  %div= "From: %s" % CMS_CONFIG['site_settings']['sendgrid_username']
+  %div= "From: %s" % @cms_config['site_settings']['sendgrid_username']
   %br
   %div.newsletter-preview
     = (@newsletter.body)
@@ -15,7 +15,7 @@
     %br
     %br
     %div.footer
-      %p= "This email was sent from %s to *recipient*" % CMS_CONFIG['site_settings']['sendgrid_username']
+      %p= "This email was sent from %s to *recipient*" % @cms_config['site_settings']['sendgrid_username']
       = link_to 'Manage your subscriptions.', "#{$DOMAIN_PATH}subscriptions/#{@contact_id.to_s}/edit?email=#{u(@email)}"
       %p= @settings.newsletter_footer_text
       %p== Email service provided by #{provider_link}
