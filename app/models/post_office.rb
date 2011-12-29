@@ -4,13 +4,13 @@ class PostOffice < ActionMailer::Base
     :port => 587,
     :enable_starttls_auto => true,
     :authentication => :login,
-    :domain => @cms_config['website']['domain'],
-    :user_name => @cms_config['site_settings']['sendgrid_username'],
-    :password => @cms_config['site_settings']['sendgrid_password'],
+    :domain => $CMS_CONFIG['website']['domain'],
+    :user_name => $CMS_CONFIG['site_settings']['sendgrid_username'],
+    :password => $CMS_CONFIG['site_settings']['sendgrid_password'],
   }
   
   def newsletter(newsletter, name, email, contact_id, blast_id, settings)
-    setup_email(email, @cms_config['site_settings']['sendgrid_username'], newsletter.subject)
+    setup_email(email, $CMS_CONFIG['site_settings']['sendgrid_username'], newsletter.subject)
     body :name => name, :email => email,:newsletter => newsletter, 
     :contact_id => contact_id, :blast_id => blast_id, :settings => settings
   end
