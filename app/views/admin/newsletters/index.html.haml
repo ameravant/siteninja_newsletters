@@ -23,9 +23,10 @@
       %th.center Blasts
       %th Last Sent
       %th
+      %th Delete
     %tr
     - @newsletters.each do |newsletter|
-      %tr
+      %tr[newsletter]
         %td
           = icon("Write", edit_admin_newsletter_path(newsletter))
           = link_to newsletter.subject, edit_admin_newsletter_path(newsletter)
@@ -38,6 +39,8 @@
           = newsletter.newsletter_blasts.empty? ? 'not sent yet' : newsletter.last_blast_time
         %td
           = link_to "Send this newsletter", new_admin_newsletter_newsletter_blast_path(newsletter)
+        %td
+          = trash_icon(newsletter, admin_newsletter_path(newsletter), "#{newsletter.subject}")
         = clear
 
 -unless @latest_blasts.empty?
