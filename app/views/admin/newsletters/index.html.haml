@@ -2,41 +2,42 @@
 
 %h1= yield :title 
 
-%p.icon
-  = icon "Plus", new_admin_newsletter_path
-  = link_to "Create a new newsletter", new_admin_newsletter_path
-
-  = icon "Write", new_admin_person_group_path
-  = link_to "Groups", admin_person_groups_path
-  
-  = icon 'Wait', admin_emails_path
-  = link_to "View email queue", admin_emails_path
-  
-  = icon "Gear", edit_admin_setting_path
-  = link_to "Newsletter settings", edit_admin_setting_path(:anchor => 'Newsletter')
-
+.box
+  %span.hmenu
+    = icon "Plus", new_admin_newsletter_path
+    = link_to "Create a new newsletter", new_admin_newsletter_path
+  %span.hmenu
+    = icon "Write", new_admin_person_group_path
+    = link_to "Groups", admin_person_groups_path
+  %span.hmenu
+    = icon 'Wait', admin_emails_path
+    = link_to "View email queue", admin_emails_path
+  %span.hmenu
+    = icon "Gear", edit_admin_setting_path
+    = link_to "Newsletter settings", edit_admin_setting_path(:anchor => 'Newsletter')
+    
 - unless @newsletters.empty?
   %table.full_width
     %tr
-      %th Subject
-      %th Images
+      %th{:style => "width: 350px;"} Subject
       %th.center Blasts
       %th Last Sent
-      %th
-      %th Delete
+      %th{:style => "width: 50px;"} Images
+      %th{:style => "width: 150px;"}
+      %th{:style => "width: 60px;"} Options
     %tr
     - @newsletters.each do |newsletter|
-      %tr[newsletter]
+      %tr[newsletter]{:class => cycle("odd","even")}
         %td
           = icon("Write", edit_admin_newsletter_path(newsletter))
           = link_to newsletter.subject, edit_admin_newsletter_path(newsletter)
-        %td
-          = icon "Plus", new_admin_newsletter_image_path(newsletter)        
-          = newsletter.images_count
         %td.center
           = link_to 'Blasts', [:admin, newsletter, :newsletter_blasts]
-        %td
+        %td.detail
           = newsletter.newsletter_blasts.empty? ? 'not sent yet' : newsletter.last_blast_time
+        %td
+          = icon "Picture", [:admin, newsletter, :images]
+          = link_to newsletter.images_count, [:admin, newsletter, :images]
         %td
           = link_to "Send this newsletter", new_admin_newsletter_newsletter_blast_path(newsletter)
         %td
