@@ -25,7 +25,6 @@
       %th{:style => "width: 50px;"} Images
       %th{:style => "width: 150px;"}
       %th{:style => "width: 60px;"} Options
-    %tr
     - @newsletters.each do |newsletter|
       %tr[newsletter]{:class => cycle("odd","even")}
         %td
@@ -52,16 +51,16 @@
       %th.center Recipients
       %th Sent
       %th
-    %tr
     - @latest_blasts.each do |blast|
-      %tr
-        %td
-          = icon("Write", edit_admin_newsletter_path(blast.newsletter))
-          = link_to blast.newsletter.subject, edit_admin_newsletter_path(blast.newsletter)
-        %td.center
-          = blast.recipient_count.to_s
-        %td
-          = blast.created_at.to_s(:long_ordinal)
-        = clear
+      - unless blast.newsletter.blank?
+        %tr
+          %td
+            = icon("Write", edit_admin_newsletter_path(blast.newsletter))
+            = link_to blast.newsletter.subject, edit_admin_newsletter_path(blast.newsletter)
+          %td.center
+            = blast.recipient_count.to_s
+          %td
+            = blast.created_at.to_s(:long_ordinal)
+          = clear
   
   
