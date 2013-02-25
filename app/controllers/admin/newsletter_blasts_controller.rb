@@ -35,21 +35,23 @@ class Admin::NewsletterBlastsController < AdminController
   end
   
   def send_blast(blast)
-    contacts = contacts_for_blast(blast)
-    log = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-errors-#{path_safe(Time.now.to_s)}.log")
-    unsendable = 0
-    contacts.each do |contact|
-      if contact.active && !contact.no_newsletters
-        begin
-          PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
-        rescue
-          log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
+    spawn do
+      contacts = contacts_for_blast(blast)
+      log = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-errors-#{path_safe(Time.now.to_s)}.log")
+      unsendable = 0
+      contacts.each do |contact|
+        if contact.active && !contact.no_newsletters
+          begin
+            PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
+          rescue
+            log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
+          end
+        else
+          unsendable += 1
         end
-      else
-        unsendable += 1
       end
+      blast.update_attributes(:recipient_count => contacts.size - unsendable)
     end
-    blast.update_attributes(:recipient_count => contacts.size - unsendable)
   end
   
   def authorization
