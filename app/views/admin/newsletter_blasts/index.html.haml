@@ -1,10 +1,14 @@
 %h1= "Blasts from the past for %s" % @newsletter.subject
-%ol
+%table.full-width
+  %tr
+    %th{:style => "width: 40%"} Sent At
+    %th{:style => "width: 10%"} Recipients
+    %th{:style => "width: 40%"} Groups
   -for blast in @blasts
-    %li
-      = blast.created_at
-      %p= "Sent to %d people from the following groups:" % blast.recipient_count
-      %ul
+    %tr
+      %td= blast.created_at.strftime("%b %d, %Y at %I:%M %p")
+      %td= blast.recipient_count
+      %td
         -for group in blast.person_groups
-          %li= "%s - ( %s )" % [group.title, pluralize(group.people.count, 'person')]
+          %div= "<strong>%s</strong><br />( %s )" % [group.title, pluralize(group.people.count, 'person')]
       
