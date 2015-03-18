@@ -37,11 +37,13 @@ class Admin::NewsletterBlastsController < AdminController
   def send_blast(blast)
     spawn do
       contacts = contacts_for_blast(blast)
-      log = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-errors-#{path_safe(Time.now.to_s)}.log")
+      log = Logger.new("#{RAILS_ROOT}/log/newsletter-blat-errors-#{path_safe(Time.now.to_s)}.log")
       unsendable = 0
       contacts.each do |contact|
         if contact.active && !contact.no_newsletters
           begin
+            contact.first_name = "NotProvided" if contact.first_name.blank?
+            contact.last_name = "NotProvided" if contact.last_name.blank?
             PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
           rescue
             log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
