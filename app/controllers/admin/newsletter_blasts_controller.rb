@@ -42,10 +42,10 @@ class Admin::NewsletterBlastsController < AdminController
       contacts.each do |contact|
         if contact.active && !contact.no_newsletters
           begin
-            contact.first_name = "NotProvided" if contact.first_name.blank?
-            contact.last_name = "NotProvided" if contact.last_name.blank?
-            PostOffice.newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
-            log2.info "#{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
+            #contact.first_name = "NotProvided" if contact.first_name.blank?
+            #contact.last_name = "NotProvided" if contact.last_name.blank?
+            PostOffice.delay.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
+            #log2.info "#{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
           rescue
             log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
           end
@@ -55,7 +55,7 @@ class Admin::NewsletterBlastsController < AdminController
       end
     #end
   end
-  #
+  #handle_asynchronously :send_blast, :run_at => Proc.new { 2.seconds.from_now }
 
   private
   
