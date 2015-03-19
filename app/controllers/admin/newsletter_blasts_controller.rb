@@ -55,10 +55,8 @@ class Admin::NewsletterBlastsController < AdminController
           unsendable += 1
         end
       end
-      
     #end
   end
-  handle_asynchronously :send_blast
   def authorization
     authorize(@permissions['newsletter_blasts'], "Newsletter Blasts")
   end
