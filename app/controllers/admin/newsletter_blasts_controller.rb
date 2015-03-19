@@ -19,9 +19,9 @@ class Admin::NewsletterBlastsController < AdminController
     params[:newsletter_blast][:person_group_ids] ||= []
     if @blast.save
       flash[:notice] = "Newsletters are being sent"
-      spawn do 
+      #spawn do 
         send_blast(@blast)
-      end
+      #end
       redirect_to admin_newsletters_path
     else
       render :new
