@@ -39,7 +39,7 @@ class Admin::NewsletterBlastsController < AdminController
     #spawn do
       contacts = contacts_for_blast(blast)
       log = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-errors-#{path_safe(Time.now.to_s)}.log")
-      log2 = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-#{pa@th_safe(Time.now.to_s)}.log")
+      log2 = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-#{path_safe(Time.now.to_s)}.log")
       unsendable = 0
       contacts.each do |contact|
         if contact.active && !contact.no_newsletters
