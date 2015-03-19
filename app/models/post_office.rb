@@ -14,6 +14,7 @@ class PostOffice < ActionMailer::Base
     body :name => name, :email => email,:newsletter => newsletter, 
     :contact_id => contact_id, :blast_id => blast_id, :settings => settings
   end
+  handle_asynchronously :newsletter#, :run_at => Proc.new { 2.seconds.from_now }
     
   private
     

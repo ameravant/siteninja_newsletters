@@ -39,7 +39,7 @@ class Admin::NewsletterBlastsController < AdminController
       log = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-errors-#{path_safe(Time.now.to_s)}.log")
       log2 = Logger.new("#{RAILS_ROOT}/log/newsletter-blast-#{path_safe(Time.now.to_s)}.log")
       unsendable = 0
-      contacts.delay.each do |contact|
+      contacts.each do |contact|
         if contact.active && !contact.no_newsletters
           begin
             contact.first_name = "NotProvided" if contact.first_name.blank?
@@ -55,7 +55,7 @@ class Admin::NewsletterBlastsController < AdminController
       end
     #end
   end
-  #handle_asynchronously :send_blast, :run_at => Proc.new { 2.seconds.from_now }
+  #
 
   private
   
