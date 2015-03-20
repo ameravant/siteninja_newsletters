@@ -18,9 +18,9 @@ class Admin::NewsletterBlastsController < AdminController
     @blast.newsletter_id = params[:newsletter_id]
     params[:newsletter_blast][:person_group_ids] ||= []
     if @blast.save
-      flash[:notice] = "Newsletters are being sent"
       #spawn do 
-        send_blast(@blast)
+      Delayed::Job.enqueue(MailingJob.new(@blast.id))
+      flash[:notice] = "Newsletters are being sent"
       #end
       redirect_to admin_newsletters_path
     else
@@ -55,7 +55,7 @@ class Admin::NewsletterBlastsController < AdminController
       end
     #end
   end
-  handle_asynchronously :send_blast#, :run_at => Proc.new { 2.seconds.from_now }
+  #handle_asynchronously :send_blast#, :run_at => Proc.new { 2.seconds.from_now }
 
   private
   
