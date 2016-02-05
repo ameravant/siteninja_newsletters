@@ -1,5 +1,6 @@
 
 <%-
+@settings = Setting.first
 pretty_body = @newsletter.body
 pretty_body.gsub!(/\#(\S*)_image:(\S*)\#/) {|x| render(:partial => "/post_office/embed_image", :locals => {:image_id => $2, :size => $1})}
 pretty_body.gsub!('href="/', "href=\"#{$FULL_DOMAIN_PATH}")
