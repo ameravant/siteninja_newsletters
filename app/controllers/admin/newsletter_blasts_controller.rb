@@ -19,9 +19,9 @@ class Admin::NewsletterBlastsController < AdminController
     params[:newsletter_blast][:person_group_ids] ||= []
     if @blast.save
       flash[:notice] = "Newsletters are being sent"
-      spawn do 
+      #spawn do 
         send_blast(@blast)
-      end
+      #end
       redirect_to admin_newsletters_path
     else
       render :new
@@ -35,7 +35,7 @@ class Admin::NewsletterBlastsController < AdminController
   end
   
   def send_blast(blast)
-    spawn do
+    Thread.new do
       contacts = contacts_for_blast(blast)
       log = Logger.new("#{RAILS_ROOT}/log/newsletter-blat-errors-#{path_safe(Time.now.to_s)}.log")
       unsendable = 0
@@ -53,6 +53,7 @@ class Admin::NewsletterBlastsController < AdminController
         end
       end
       blast.update_attributes(:recipient_count => contacts.size - unsendable)
+      ActiveRecord::Base.connection.close
     end
   end
   
