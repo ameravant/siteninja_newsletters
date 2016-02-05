@@ -10,7 +10,7 @@ class PostOffice < ActionMailer::Base
   }
   
   def newsletter(newsletter, name, email, contact_id, blast_id, settings)
-    setup_email(email, $CMS_CONFIG['site_settings']['sendgrid_username'], newsletter.subject, "#{$CMS_CONFIG['website']['name']} <#{Setting.first.inquiry_notification_email}>")
+    setup_email(email, "#{$CMS_CONFIG['website']['name']} <#{$CMS_CONFIG['site_settings']['sendgrid_username']}>", newsletter.subject, "#{$CMS_CONFIG['website']['name']} <#{Setting.first.inquiry_notification_email}>")
     body :name => name, :email => email,:newsletter => newsletter, 
     :contact_id => contact_id, :blast_id => blast_id, :settings => settings
   end
