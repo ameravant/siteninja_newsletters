@@ -44,7 +44,7 @@ class Admin::NewsletterBlastsController < AdminController
           begin
             contact.first_name = "NotProvided" if contact.first_name.blank?
             contact.last_name = "NotProvided" if contact.last_name.blank?
-            PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings) unless contact.no_newsletters
+            PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings, $CMS_CONFIG['website']['name']) unless contact.no_newsletters
           rescue
             log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
           end
