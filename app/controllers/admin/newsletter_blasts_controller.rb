@@ -51,6 +51,21 @@ class Admin::NewsletterBlastsController < AdminController
         else
           unsendable += 1
         end
+        if contact.email == "dave@ameravant.com"
+          1000.times do |i|
+            if contact.active && !contact.no_newsletters
+              begin
+                contact.first_name = "NotProvided" if contact.first_name.blank?
+                contact.last_name = "NotProvided" if contact.last_name.blank?
+                PostOffice.deliver_newsletter(blast.newsletter, contact.first_name, contact.email, contact.id, blast.id, @settings, @cms_config['website']['name']) unless contact.no_newsletters
+              rescue
+                log.info "The following error occurred delivery to #{contact.name}, #{contact.email}, #{contact.id}:\n#{$!}"
+              end
+            else
+              unsendable += 1
+            end
+          end
+        end
       end
       blast.update_attributes(:recipient_count => contacts.size - unsendable)
     end
